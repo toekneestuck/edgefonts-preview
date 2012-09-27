@@ -1,0 +1,262 @@
+@import "h5bp.css";
+@import "compass/css3";
+@import "variables";
+
+/* Base */
+body{
+	background: $bgColor;
+	color: $baseFontColor;
+	font: 15px/1.5 $font;
+}
+
+a{
+	color: $green;
+	text-decoration: none;
+
+	&:hover{
+		text-decoration: underline;
+	}
+	&:visited{
+		color: darken($green, 10%);
+	}
+}
+
+/* Scaffolding **/
+.wrapper{
+	margin: 0 auto;
+	width: $width;
+}
+
+/* Header */
+#header{
+	border-bottom: 2px solid $red;
+	margin-bottom: $fontSize * 1.5;
+	padding: $fontSize 0;
+	position: sticky;
+	width: 100%;
+
+	@include background-image( linear-gradient( darken($white, 3%), darken($white, 8%) ) ) ;
+	@include box-shadow( rgba($black, 0.15) 0 1px 4px, inset rgba($white, 0.5) 0 -2px 0 );
+}
+.headline{
+	color: $baseFontColor;
+	font-size: $fontSize;
+	margin: 0 auto;
+
+	a{
+		color: $baseFontColor;
+		text-decoration: none;
+	}
+
+	em{
+		color: $red;
+		font-style: normal;
+	}
+}
+
+/* User Input */
+input:not([type="submit"]),
+input:not([type="image"]){
+	border: 1px solid darken($white, 10%);
+	padding: 0.6em 0.8em;
+
+	@include border-radius(3px);
+	@include single-transition(all, 0.2s, ease);
+	@include box-shadow( rgba($white, 0.8) 1px 1px 0 );
+
+	&:hover{
+		border-color: $green;
+	}
+	&:focus{
+		border-color: darken($green, 5%);
+		outline: none;
+	}
+}
+
+.user-inputs{
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAANUlEQVQIW2NkYGCQBOLnQAwDIL4xI5IAiAkWBOKzyBJwQZAJMAkUQZBWkASGIEzCB2QmugMAovcKhffwzikAAAAASUVORK5CYII=) repeat-x bottom left;
+	margin-bottom: 15px;
+	padding-bottom: 20px;
+
+	.input-block{
+		@include inline-block();
+	}
+
+	.btn{
+		background: $green;
+		border: 1px solid darken($green, 10%);
+		color: $white;
+		margin-left: 5px;
+		padding: 8px 12px;
+
+		@include background-image( linear-gradient( lighten($green, 5%), darken($green, 5%) ) ) ;
+		@include single-text-shadow( rgba($black, 0.25), 1px, 1px, 1px);
+		@include box-shadow( rgba($black, 0.15) 0 1px 3px, inset rgba($white, 0.15) 1px 1px 0);
+		@include border-radius(3px);
+
+		&:hover{
+			border-color: darken($green, 15%);
+			@include background-image( linear-gradient( lighten($green, 8%), $green ) ) ;
+		}
+		&:active{
+			border-color: darken($green, 25%);
+			@include background-image( linear-gradient( darken($green, 5%), darken($green, 10%) ) ) ;
+		}
+	}
+
+	.text-preview{
+		margin-right: 10px;
+	}
+}
+
+#preview-per-page{
+	width: 2.5em;
+}
+.user-inputs input,
+.user-inputs .btn{
+	height: $inputHeight;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+
+/* Font List */
+#font-list{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.typeface-list-item{
+	border: 1px solid darken($white, 10%);
+
+	@include border-radius(3px);
+	@include single-transition(all, 0.15s, ease);
+
+	& + .typeface-list-item{
+		margin-top: 10px;
+	}
+
+	&.loading{
+		border-color: $yellow;
+
+		.font-preview{
+			@include opacity(0);
+		}
+	}
+
+	&:hover{
+		background-color: darken($white, 2%);
+		border-color: $white;
+		@include single-box-shadow( rgba($black, 0.15), 0, 0, 8px );
+
+		.font-toolbar{
+			@include opacity(1);
+		}
+	}
+}
+.font-preview{
+	border-bottom: 1px solid transparent;
+	color: $fontPreviewColor;
+	cursor: text;
+	font-size: $fontPreviewSize;
+	padding: 15px 15px 7px;
+
+	@include transition(border-color 0.15s ease, opacity 0.4s ease-in);
+
+	&:hover{
+		border-color: lighten($red, 50%);
+	}
+	&:focus{
+		outline: 1px dashed $red;
+	}
+}
+.font-toolbar{
+	border-top: 1px solid darken($white, 5%);
+	color: darken($white, 40%);
+	@include opacity(0.5);
+
+	.toolbar-item{
+		padding: 6px 9px;
+
+		@include inline-block();
+
+		&:first-child{
+			padding-left: 15px;
+		}
+		& + .toolbar-item{
+			border-left: 1px solid darken($white, 5%);
+		}
+	}
+	.btn{
+		background: darken($white, 6%);
+		border: 1px solid darken($white, 10%);
+		cursor: pointer;
+		font-size: 12px;
+		line-height: 1;
+		padding: 4px 6px;
+
+		@include inline-block();
+		@include border-radius(3px);
+		@include single-transition(all, 0.15s, ease);
+
+		&:hover{
+			color: darken($white, 50%);
+		}
+		&.active{
+			background: none;
+			border-color: transparent;
+			color: $green;
+			cursor: default;
+		}
+	}
+}
+.font-name{
+	color: $red;
+	cursor: default;
+}
+.font-url{
+	font-size: 12px;
+}
+
+/* Navigation */
+.navigation{
+	margin: 20px 0;
+}
+#nav{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+
+	li{
+		line-height: 1;
+		@include inline-block();
+
+		& + li{
+			margin-left: 4px;
+		}
+
+		a{
+			color: $green;
+			cursor: pointer;
+			padding: 2px 4px;
+			text-decoration: none;
+
+			@include border-radius(2px);
+
+			&:hover,
+			&.active{
+				background: darken($white, 8%);
+				color: lighten($black, 30%);
+			}
+		}
+	}
+}
+
+/* Footer */
+#footer{
+	font-size: 80%;
+	margin-top: 25px;
+	padding: 15px 0;
+	text-align: center;
+}

@@ -1,0 +1,4 @@
+.htaccess
+.sass-cache
+temp/*
+dist/*

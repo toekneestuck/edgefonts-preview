@@ -1,0 +1,10 @@
+<div class="font-preview" contenteditable="true" title="Click to Edit Text"><%= preview_text %></div>
+<div class="font-toolbar">
+	<span class="toolbar-item font-name"><%= name %></span>
+	<span class="toolbar-item font-variants">
+	<% _.each( variants, function( name, key ){ %>
+		<span class="btn<%= key === 'n4' ? ' active' : '' %>" data-id="<%= key %>"><%= name %></span>
+	<% }) %>
+	</span>
+	<span class="toolbar-item font-url">URL: <%= url %></span>
+</div>
