@@ -23,25 +23,26 @@ function( app, require, Backbone, Marionette ) {
 		index : function( num ){
 			var typefaces = require("modules/typefaces_list");
 
-			if( !app.main && _.isUndefined(num) ){
+			if( !app.main ){
 				// Enable bootstrapping
 				typefaces.collection.reset( app.bootstrap || [] );
-				typefaces.collection.initializePagination();
+				typefaces.collection.initializePagination( num );
 				typefaces.list = typefaces.list || new typefaces.view({
 					model : app.user,
 					collection: typefaces.collection
 				});
 
-			}else{
-				typefaces.collection.goTo( num || 1 );
-				app.tracker.push(['_trackEvent', 'Pagination', num]);
-			}
-
-			if( !app.main ){
 				app.addRegions({
 					main: '#dirty-business'
 				});
 				app.main.show( typefaces.list );
+
+			}else{
+				typefaces.collection.goTo( num || 1 );
+			}
+
+			if( num ){
+				app.tracker.push(['_trackEvent', 'Pagination', num]);
 			}
 		}
 	});

@@ -60,8 +60,9 @@ function( app, _, Backbone, Typeface, Paginator, _str ){
 			'i9' : 'Black Italic'
 		},
 
-		initializePagination : function(){
+		initializePagination : function( page ){
 			this.totalPages = Math.ceil( (app.bootstrap ? app.bootstrap.length : this.length ) / this.paginator_ui.perPage );
+			this.currentPage = page || 1;
 			this.pager();
 		},
 
