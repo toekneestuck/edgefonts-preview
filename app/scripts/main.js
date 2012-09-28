@@ -28,7 +28,7 @@ function($, _, app, Router) {
 
 	$(document).ready(function(){
 		app.start({
-			root : '/',
+			root : window.location.pathname,
 			bootstrap : window.bootstrap || [],
 			tracker : window._gaq || []
 		})

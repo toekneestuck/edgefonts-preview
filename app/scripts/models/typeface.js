@@ -23,7 +23,7 @@ function( _, Backbone){
 		},
 
 		initialize : function(){
-
+			this.set({ fonts_count : this.get('fonts').length });
 		}
 	});
 

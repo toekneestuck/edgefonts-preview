@@ -37,6 +37,10 @@ a{
 
 	@include background-image( linear-gradient( darken($white, 3%), darken($white, 8%) ) ) ;
 	@include box-shadow( rgba($black, 0.15) 0 1px 4px, inset rgba($white, 0.5) 0 -2px 0 );
+
+	.social{
+		float: right;
+	}
 }
 .headline{
 	color: $baseFontColor;
@@ -56,7 +60,8 @@ a{
 
 /* User Input */
 input:not([type="submit"]),
-input:not([type="image"]){
+input:not([type="image"]),
+select{
 	border: 1px solid darken($white, 10%);
 	padding: 0.6em 0.8em;
 
@@ -80,6 +85,10 @@ input:not([type="image"]){
 
 	.input-block{
 		@include inline-block();
+
+		& + .input-block{
+			margin-left: 10px;
+		}
 	}
 
 	.btn{
@@ -103,16 +112,13 @@ input:not([type="image"]){
 			@include background-image( linear-gradient( darken($green, 5%), darken($green, 10%) ) ) ;
 		}
 	}
-
-	.text-preview{
-		margin-right: 10px;
-	}
 }
 
 #preview-per-page{
 	width: 2.5em;
 }
 .user-inputs input,
+.user-inputs select,
 .user-inputs .btn{
 	height: $inputHeight;
 	padding-top: 0;

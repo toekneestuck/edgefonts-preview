@@ -3,8 +3,8 @@ define([
 	"lodash",
 	"backbone",
 	"models/typeface",
-	"plugins/backbone.paginator",
-	"plugins/underscore.string"
+	"plugins/backbone.paginator"
+	// "plugins/underscore.string"
 ],
 
 function( app, _, Backbone, Typeface, Paginator, _str ){

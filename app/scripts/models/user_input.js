@@ -11,6 +11,7 @@ function( _, Backbone){
 			page: 1,
 			per_page : 10,
 			filter : null,
+			sort : {attr:'name', dir:'asc'},
 			preview_text : 'The quick brown fox jumped over the lazy dog'
 		},
 

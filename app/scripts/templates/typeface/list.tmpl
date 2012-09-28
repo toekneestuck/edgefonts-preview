@@ -8,6 +8,15 @@
 		<input type="number" id="preview-per-page" value="<%= per_page %>" size="3" />
 		<button class="btn" id="preview-per-page-btn">Set</button>
 	</div>
+	<div class="input-block preview-sort">
+		<label for="preview-sort">Sort By</label>
+		<select id="preview-sort">
+			<option value="fonts_count,desc" data-dir="desc"<%= setSortInput('fonts_count', 'desc') %>># of Styles (desc)</option>
+			<option value="fonts_count,asc" data-dir="asc"<%= setSortInput('fonts_count', 'asc') %>># of Styles (asc)</option>
+			<option value="name,asc" data-dir="asc"<%= setSortInput('name', 'asc') %>>A-Z</option>
+			<option value="name,desc" data-dir="desc"<%= setSortInput('name', 'desc') %>>Z-A</option>
+		</select>
+	</div>
 </div>
 
 <ul id="font-list"></ul>

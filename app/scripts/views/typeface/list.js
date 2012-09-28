@@ -27,7 +27,8 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			previewText : '#preview-text-input',
 			previewTextBtn : '#preview-text-btn',
 			perPageInput : '#preview-per-page',
-			perPageBtn : '#preview-per-page-btn'
+			perPageBtn : '#preview-per-page-btn',
+			sortInput : '#preview-sort'
 		},
 
 		events : {
@@ -35,7 +36,8 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			'keypress #preview-text-input' : 'setPreviewText',
 			'click #preview-text-btn' : 'setPreviewText',
 			'click #preview-per-page-btn' : 'setPreviewsPerPage',
-			'keypress #preview-per-page' : 'setPreviewsPerPage'
+			'keypress #preview-per-page' : 'setPreviewsPerPage',
+			'change #preview-sort' : 'setSort'
 		},
 
 		initialize : function(){
@@ -58,6 +60,26 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 				this.ui.previewText.val( value );
 				this.collection.setPreviewText( value );
 			}
+
+			if( model.hasChanged('sort') ){
+				var sort = model.get('sort');
+
+				this.ui.sortInput.val( [sort.attr,sort.dir].join(',') );
+
+				this.collection.setSort( sort.attr, sort.dir );
+			}
+		},
+
+		templateHelpers : function(){
+			return {
+				setSortInput : function( attr, dir ){
+					var sort = this.sort;
+					if( attr === sort.attr && dir === sort.dir ){
+						return ' selected="selected"';
+					}
+					return '';
+				}
+			};
 		},
 
 		onRender : function(){
@@ -120,6 +142,23 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 				evt.preventDefault();
 				app.tracker.push(['_trackEvent', 'Per Page', newLimit]);
 			}
+		},
+
+		setSort : function( evt ){
+			var value = this.ui.sortInput.val().split(','),
+			    attr = value[0],
+			    dir = value[1];
+
+			this.model.set({
+				sort : {
+					attr: attr,
+					dir : dir
+				}
+			});
+
+			app.tracker.push(['_trackEvent', 'Sorting', attr + ', ' + dir]);
+
+			// Do NOT evt.preventDefault() so the change event fires
 		}
 	})
 
