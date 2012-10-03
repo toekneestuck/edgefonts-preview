@@ -5,8 +5,8 @@ One-pager to preview Adobe Edge Fonts. A work in progress. Much documentation of
 
 To Do List
 ----------
-* Add filtering (alphabetical, number of styles, etc)
 * Add search
+* Mark favorites (and view them)
 * Adjust font size
 
 Overview

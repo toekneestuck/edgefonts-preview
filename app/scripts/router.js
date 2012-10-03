@@ -43,6 +43,7 @@ function( app, require, Backbone, Marionette ) {
 
 			if( num ){
 				app.tracker.push(['_trackEvent', 'Pagination', num]);
+				app.tracker.push(['_trackPageview']);
 			}
 		}
 	});
