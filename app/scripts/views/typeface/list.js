@@ -9,10 +9,11 @@ define([
 	"models/user_input",
 	"text!templates/typeface/list.tmpl",
 	"views/typeface/list_item",
-	"app"
+	"app",
+	"plugins/select2"
 ],
 
-function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceListItemView, app ){
+function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceListItemView, app, Select2 ){
 
 	var TypefacesListView = Marionette.CompositeView.extend({
 
@@ -28,7 +29,11 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			previewTextBtn : '#preview-text-btn',
 			perPageInput : '#preview-per-page',
 			perPageBtn : '#preview-per-page-btn',
-			sortInput : '#preview-sort'
+			sortInput : '#preview-sort',
+			searchInput : '#search',
+			searchBtn : '#search-btn',
+			nameFilter : '#name-filter',
+			favoritesBtn : '#view-favorites-btn'
 		},
 
 		events : {
@@ -37,7 +42,9 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			'click #preview-text-btn' : 'setPreviewText',
 			'click #preview-per-page-btn' : 'setPreviewsPerPage',
 			'keypress #preview-per-page' : 'setPreviewsPerPage',
-			'change #preview-sort' : 'setSort'
+			'change #preview-sort' : 'setSort',
+			'change #name-filter' : 'liveFilter',
+			'click #view-favorites-btn' : 'toggleFavorites'
 		},
 
 		initialize : function(){
@@ -46,9 +53,9 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 
 		updateSettings : function( model, attrs ){
 			if( model.hasChanged('per_page') ){
-				var value = model.get('per_page');
-				this.ui.perPageInput.val( value );
-				this.collection.updatePagination( value );
+				var num = model.get('per_page');
+				this.ui.perPageInput.val( num );
+				this.collection.updatePagination( num );
 
 				// !TODO: I shouldn't have to force a re-render of the
 				// entire CompositeView
@@ -56,9 +63,9 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			}
 
 			if( model.hasChanged('preview_text') ){
-				var value = model.get('preview_text');
-				this.ui.previewText.val( value );
-				this.collection.setPreviewText( value );
+				var text = model.get('preview_text');
+				this.ui.previewText.val( text );
+				this.collection.setPreviewText( text );
 			}
 
 			if( model.hasChanged('sort') ){
@@ -67,6 +74,33 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 				this.ui.sortInput.val( [sort.attr,sort.dir].join(',') );
 
 				this.collection.setSort( sort.attr, sort.dir );
+			}
+
+			if( model.hasChanged('query') ){
+
+				if( model.get('query').length ){
+
+					this.collection.setFieldFilter([{
+						field: 'slug',
+						type: 'oneOf',
+						value : model.get('query')
+					}]);
+
+				}else{
+					// NOT WORKING
+					this.collection.clearFieldFilter();
+				}
+
+				// TODO: This is slow and sucks. Shouldn't have to call these.
+				this.collection.updatePagination( model.get('per_page') );
+				this.buildNavigation();
+			}
+
+			if( model.hasChanged('show_favorites') ){
+				var active = model.get('show_favorites');
+				this.ui.favoritesBtn
+					.html( active ? '&#9733;' : '&#9734;')
+					.attr('title', active ? 'Show All' : 'Show Favorites Only');
 			}
 		},
 
@@ -78,12 +112,14 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 						return ' selected="selected"';
 					}
 					return '';
-				}
+				},
+				showingFavorites : this.model.showingFavorites()
 			};
 		},
 
 		onRender : function(){
 			this.buildNavigation();
+			this.buildFilter();
 		},
 
 		/**
@@ -105,6 +141,29 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			}
 
 			this.ui.nav.html( $container.html() );
+		},
+
+		buildFilter : function(){
+
+			if( this.ui.nameFilter.data('select2') ){
+
+				this.ui.nameFilter.select2("val", this.model.get('query'));
+
+			}else{
+
+				this.ui.nameFilter.select2({
+					placeholder : 'Choose fonts',
+					tags : _.map( this.collection.origModels, function( model ){
+						return {
+							id : model.get('slug'),
+							text: model.get('name')
+						};
+					}),
+					multiple : true,
+					closeOnSelect : false,
+					val : this.model.get('query')
+				});
+			}
 		},
 
 		goToPage : function( evt ){
@@ -159,6 +218,42 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			app.tracker.push(['_trackEvent', 'Sorting', attr + ', ' + dir]);
 
 			// Do NOT evt.preventDefault() so the change event fires
+		},
+
+		liveFilter : function( evt ){
+			var value = this.ui.nameFilter.val();
+
+			this.model.set({ query : value.length ? value.split(',') : '' });
+		},
+
+		toggleFavorites : function( evt ){
+
+			if( this.model.showingFavorites() ){
+				this.clearFavorites();
+			}else{
+				this.viewFavorites();
+			}
+
+			evt.preventDefault();
+		},
+
+		viewFavorites : function(){
+			var favorites = this.collection.where({ favorite : true });
+			favorites = _.map( favorites, function( model ){
+				return model.get('slug');
+			});
+
+			this.model.set({
+				query : favorites,
+				show_favorites : true
+			});
+		},
+
+		clearFavorites : function(){
+			this.model.set({
+				query : this.collection.lastFilterExpression,
+				show_favorites : false
+			});
 		}
 	})
 

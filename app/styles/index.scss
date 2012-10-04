@@ -1,4 +1,5 @@
 @import "h5bp.css";
+@import "select2.css";
 @import "compass/css3";
 @import "variables";
 
@@ -30,7 +31,6 @@ a{
 /* Header */
 #header{
 	border-bottom: 2px solid $red;
-	margin-bottom: $fontSize * 1.5;
 	padding: $fontSize 0;
 	position: sticky;
 	width: 100%;
@@ -59,13 +59,14 @@ a{
 }
 
 /* User Input */
+select,
 input:not([type="submit"]),
 input:not([type="image"]),
-select{
+.select2-choices{
 	border: 1px solid darken($white, 10%);
 	padding: 0.6em 0.8em;
 
-	@include border-radius(3px);
+	@include border-radius(2px);
 	@include single-transition(all, 0.2s, ease);
 	@include box-shadow( rgba($white, 0.8) 1px 1px 0 );
 
@@ -78,16 +79,41 @@ select{
 	}
 }
 
-.user-inputs{
+.font-modifiers{
 	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAANUlEQVQIW2NkYGCQBOLnQAwDIL4xI5IAiAkWBOKzyBJwQZAJMAkUQZBWkASGIEzCB2QmugMAovcKhffwzikAAAAASUVORK5CYII=) repeat-x bottom left;
-	margin-bottom: 15px;
+	margin: 20px 0 15px;
 	padding-bottom: 20px;
+}
+
+.filters{
+	color: $white;
+	padding: $fontSize;
+
+	@include background-image( linear-gradient( lighten($black, 20%), lighten($black, 10%) ) );
+	@include border-radius( 0 0 3px 3px );
+	@include box-shadow( 0 2px 2px rgba($black, 0.2) );
+
+	select,
+	input:not([type="submit"]),
+	input:not([type="image"]),
+	.select2-choices{
+		@include box-shadow( rgba($black, 0.8) 1px 1px 0 );
+	}
+}
+
+.filters,
+.font-modifiers{
 
 	.input-block{
 		@include inline-block();
 
 		& + .input-block{
-			margin-left: 10px;
+			margin-left: 15px;
+		}
+
+		label{
+			padding-right: 3px;
+			vertical-align: middle;
 		}
 	}
 
@@ -117,12 +143,27 @@ select{
 #preview-per-page{
 	width: 2.5em;
 }
-.user-inputs input,
-.user-inputs select,
-.user-inputs .btn{
+
+.text-preview{
+	width: 100%;
+}
+#preview-text-input{
+	width: 855px;
+}
+
+.filters input,
+.filters select,
+.filters .btn,
+.filters .select2-choices{
 	height: $inputHeight;
 	padding-top: 0;
 	padding-bottom: 0;
+}
+
+.live-search{
+	.select2-container{
+		width: 400px;
+	}
 }
 
 
@@ -222,6 +263,10 @@ select{
 }
 .font-url{
 	font-size: 12px;
+}
+.favorite{
+	color: $yellow;
+	cursor: pointer;
 }
 
 /* Navigation */

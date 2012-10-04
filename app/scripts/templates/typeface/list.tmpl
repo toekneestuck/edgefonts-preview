@@ -1,7 +1,10 @@
-<div class="user-inputs">
-	<div class="input-block text-preview">
-		<input type="text" id="preview-text-input" value="<%= preview_text %>" size="50" />
-		<button class="btn" id="preview-text-btn">Preview</button>
+<div class="filters">
+	<div class="input-block live-search">
+		<label for="name-filter">Filter</label>
+		<input type="hidden" id="name-filter" />
+	</div>
+	<div class="input-block view-favorites">
+		<button class="btn" id="view-favorites-btn" title="<%= showingFavorites ? 'Show All' : 'Show Favorites Only' %>"><%= showingFavorites ? '&#9733;' : '&#9734;' %></button>
 	</div>
 	<div class="input-block previews-per-page">
 		<label for="preview-per-page">Per Page</label>
@@ -16,6 +19,13 @@
 			<option value="name,asc" data-dir="asc"<%= setSortInput('name', 'asc') %>>A-Z</option>
 			<option value="name,desc" data-dir="desc"<%= setSortInput('name', 'desc') %>>Z-A</option>
 		</select>
+	</div>
+</div>
+
+<div class="font-modifiers">
+	<div class="input-block text-preview">
+		<input type="text" id="preview-text-input" value="<%= preview_text %>" size="50" />
+		<button class="btn" id="preview-text-btn">Preview</button>
 	</div>
 </div>
 

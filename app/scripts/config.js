@@ -38,6 +38,16 @@ require.config({
     "plugins/backbone.paginator" : {
       deps : ["jquery", "backbone"],
       exports : "Backbone.Paginator"
+    },
+
+    "plugins/backbone.localStorage" : {
+      deps : ["jquery", "backbone", "lodash"],
+      exports : "Backbone.LocalStorage"
+    },
+
+    "plugins/select2" : {
+      deps : ["jquery"],
+      exports : "Select2"
     }
   }
 

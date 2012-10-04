@@ -11,7 +11,8 @@ function( _, Backbone){
 			name : '',
 			slug : '',
 			fonts : [],
-			preview_text : 'The quick brown fox jumped over the lazy dog'
+			preview_text : 'The quick brown fox jumped over the lazy dog',
+			favorite : false
 		},
 
 		url : function(){
@@ -24,6 +25,10 @@ function( _, Backbone){
 
 		initialize : function(){
 			this.set({ fonts_count : this.get('fonts').length });
+		},
+
+		isFavorite : function(){
+			return this.get('favorite');
 		}
 	});
 

@@ -3,11 +3,12 @@ define([
 	"lodash",
 	"backbone",
 	"models/typeface",
-	"plugins/backbone.paginator"
+	"plugins/backbone.paginator",
+	"plugins/backbone.localStorage"
 	// "plugins/underscore.string"
 ],
 
-function( app, _, Backbone, Typeface, Paginator, _str ){
+function( app, _, Backbone, Typeface, Paginator, localStorage, _str ){
 
 	// Currently a hack till I figure out how to get
 	// underscore.string property imported
@@ -29,6 +30,8 @@ function( app, _, Backbone, Typeface, Paginator, _str ){
 		url: 'http://use.edgefonts.net/',
 		model : Typeface,
 
+		localStorage : new Backbone.LocalStorage('font_favorites'),
+
 		useLevenshteinPlugin : true,
 		paginator_core : {},
 		paginator_ui : {
@@ -38,7 +41,7 @@ function( app, _, Backbone, Typeface, Paginator, _str ){
 			totalPages : 1
 		},
 
-		// Used to map Adobe's nomenclature to undertandable names
+		// Map Adobe's nomenclature to undertandable names
 		variantMap : {
 			'n1' : 'Thin',
 			'n2' : 'Extra Light',
@@ -60,6 +63,12 @@ function( app, _, Backbone, Typeface, Paginator, _str ){
 			'i9' : 'Black Italic'
 		},
 
+		initialize : function(){
+			this.on( "change:favorite", this.saveFavorites, this );
+
+			Paginator.clientPager.prototype.initialize.call(this);
+		},
+
 		initializePagination : function( page ){
 			this.totalPages = Math.ceil( (app.bootstrap ? app.bootstrap.length : this.length ) / this.paginator_ui.perPage );
 			this.currentPage = page || 1;
@@ -71,8 +80,27 @@ function( app, _, Backbone, Typeface, Paginator, _str ){
 			_.extend(this, _.pick( this.info(), _.keys(this.paginator_ui) ) );
 		},
 
+		clearFieldFilter : function(){
+			this.lastFieldFilterRiles = [];
+			this.fieldFilterRules = [];
+			this.pager();
+			this.info();
+		},
+
 		parse : function( response ){
 			return response;
+		},
+
+		saveFavorites : function(){
+			this.each(function( model ){
+				if( model.isFavorite() ){
+					model.save();
+				}
+			});
+		},
+
+		getFavorites : function(){
+			return this.where({ favorite : true });
 		},
 
 		setPreviewText : function( text ){

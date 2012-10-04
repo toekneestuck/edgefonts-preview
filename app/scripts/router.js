@@ -25,7 +25,21 @@ function( app, require, Backbone, Marionette ) {
 
 			if( !app.main ){
 				// Enable bootstrapping
+				var favorites = typefaces.collection.localStorage.findAll();
+
 				typefaces.collection.reset( app.bootstrap || [] );
+
+				// Update attributes from favorited fonts
+				_.each( favorites, function( obj ){
+					var model = typefaces.collection.find( function( model ){
+						return model.get('slug') === obj.slug;
+					});
+
+					if( model ){
+						model.set(obj);
+					}
+				});
+
 				typefaces.collection.initializePagination( num );
 				typefaces.list = typefaces.list || new typefaces.view({
 					model : app.user,

@@ -21,13 +21,15 @@ function( $, _, Backbone, Marionette, TypefaceListItemTemplate, app ){
 
 		ui : {
 			previewText : '.font-preview',
-			variants : '.font-variants .btn'
+			variants : '.font-variants .btn',
+			favorite : '.favorite'
 		},
 
 		events : {
 			'keypress .font-preview' : 'setPreviewText',
 			'focusout .font-preview' : 'setPreviewText',
-			'click .font-variants .btn' : 'setTextStyle'
+			'click .font-variants .btn' : 'setTextStyle',
+			'click .favorite' : 'toggleFavorite'
 		},
 
 		initialize : function(){
@@ -43,7 +45,8 @@ function( $, _, Backbone, Marionette, TypefaceListItemTemplate, app ){
 		templateHelpers : function(){
 			return {
 				url : this.model.url(),
-				variants : _.pick( this.model.collection.variantMap, this.model.get('fonts') )
+				variants : _.pick( this.model.collection.variantMap, this.model.get('fonts') ),
+				activeVariant : this.activeVariant
 			};
 		},
 
@@ -99,12 +102,24 @@ function( $, _, Backbone, Marionette, TypefaceListItemTemplate, app ){
 			}
 
 			this.ui.previewText.css( css );
-			this.ui.variants.removeClass('active');
-			$btn.addClass('active');
+			this.ui.variants
+				.removeClass('active')
+				.attr('title', 'Set Style');
+
+			$btn.addClass('active')
+				.attr('title', 'Currently Viewing');
 
 			this.activeVariant = id;
 
 			app.tracker.push(['_trackEvent', 'Text Style', id, this.model.get('slug')]);
+		},
+
+		toggleFavorite : function( evt ){
+			this.model.save({ favorite : !this.model.isFavorite() });
+
+			app.tracker.push(['_trackEvent', 'Favorite', this.model.get('slug')]);
+
+			evt.preventDefault();
 		}
 	})
 
