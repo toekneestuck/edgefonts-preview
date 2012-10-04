@@ -1,0 +1,22 @@
+{
+  "author": {
+    "name": "Jerome Gravel-Niquet",
+    "email": "jeromegn@gmail.com",
+    "url": "http://jgn.me"
+  },
+  "name": "Backbone.localStorage",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jeromegn/Backbone.localStorage.git"
+  },
+  "dependencies": {
+    "uglify-js": "~1.2.6"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "readme": "# Backbone localStorage Adapter v1.0\n\n[![Build Status](https://secure.travis-ci.org/jeromegn/Backbone.localStorage.png?branch=master)](http://travis-ci.org/jeromegn/Backbone.localStorage)\n\nQuite simply a localStorage adapter for Backbone. It's a drop-in replacement for Backbone.Sync() to handle saving to a localStorage database.\n\n## Usage\n\nInclude Backbone.localStorage after having included Backbone.js:\n\n```html\n<script type=\"text/javascript\" src=\"backbone.js\"></script>\n<script type=\"text/javascript\" src=\"backbone.localStorage.js\"></script>\n```\n\nCreate your collections like so:\n\n```javascript\nwindow.SomeCollection = Backbone.Collection.extend({\n  \n  localStorage: new Backbone.LocalStorage(\"SomeCollection\"), // Unique name within your app.\n  \n  // ... everything else is normal.\n  \n});\n```\n  \nFeel free to use Backbone as you usually would, this is a drop-in replacement.\n\n## Contributing\n\nYou'll need node and to `npm install` before being able to run the minification script.\n\n1. Fork;\n2. Write code;\n3. Write tests (or vice et versa);\n4. `make test`;\n5. `make minified`;\n6. Create a pull request.\n\nHave fun!\n\n## Credits\n\nThanks to [Mark Woodall](https://github.com/llad) for the QUnit tests.\nThanks to [Martin Häcker](https://github.com/dwt) for the many fixes and the test isolation.\n\n## Licensed\n\nLicensed under MIT license\n\nCopyright (c) 2010 Jerome Gravel-Niquet\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\nLIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\nOF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\nWITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+  "_id": "Backbone.localStorage@0.0.0",
+  "description": "[![Build Status](https://secure.travis-ci.org/jeromegn/Backbone.localStorage.png?branch=master)](http://travis-ci.org/jeromegn/Backbone.localStorage)"
+}
