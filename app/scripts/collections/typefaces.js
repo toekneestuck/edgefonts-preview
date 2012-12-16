@@ -115,6 +115,12 @@ function( app, _, Backbone, Typeface, Paginator, localStorage, _str ){
 			}
 		},
 
+		setFontSize : function( size ){
+			this.each(function( model ){
+				model.set({ font_size: size });
+			});
+		},
+
 		// Stolen from underscore.string for input sanitization
 		escapeHTML: function( str ) {
 			if (str == null) return '';

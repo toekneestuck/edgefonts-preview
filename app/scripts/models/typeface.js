@@ -12,6 +12,7 @@ function( _, Backbone){
 			slug : '',
 			fonts : [],
 			preview_text : 'The quick brown fox jumped over the lazy dog',
+			font_size : 30,
 			favorite : false
 		},
 
@@ -24,7 +25,7 @@ function( _, Backbone){
 		},
 
 		initialize : function(){
-			this.set({ fonts_count : this.get('fonts').length });
+			this.set({ fonts_count : this.get('fonts').length }, { silent: true });
 		},
 
 		isFavorite : function(){

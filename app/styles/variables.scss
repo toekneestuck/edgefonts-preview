@@ -1,21 +1,29 @@
 /* Runtime Variables */
 
-$font: droid-sans, "Helvetica Neue", Helvetica, Arial, sans-serif;
-$fontSize : 15px;
-$fontPreviewSize : 30px;
+$font:                     droid-sans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+$fontSize :                15px;
+$fontPreviewSize :         30px;
 
-$inputHeight : 26px;
-$width: 970px;
+$inputHeight :             26px;
+$width:                    970px;
 
 
 /* Colors */
-$baseFontColor : #333;
-$black : #000;
-$white : #fff;
-$red : #B60202;
-$green : #30B8B8;
-$yellow: #D8B80E;
+$baseFontColor :           #333;
+$black :                   #000;
+$white :                   #fff;
+$red :                     #B60202;
+$green :                   #30B8B8;
+$yellow:                   #D8B80E;
 
-$bgColor : #f7f7f7;
-$fontPreviewColor : #333;
+$bgColor :                 #f7f7f7;
+$fontPreviewColor :        #333;
 
+
+/* Tooltip */
+$zindexTooltip :           1030;
+
+$tooltipColor :            #fff;
+$tooltipBackground :       #000;
+$tooltipArrowWidth :       5px;
+$tooltipArrowColor :       $tooltipBackground;

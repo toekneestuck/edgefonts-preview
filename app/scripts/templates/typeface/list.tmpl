@@ -4,7 +4,7 @@
 		<input type="hidden" id="name-filter" />
 	</div>
 	<div class="input-block view-favorites">
-		<button class="btn" id="view-favorites-btn" title="<%= showingFavorites ? 'Show All' : 'Show Favorites Only' %>"><%= showingFavorites ? '&#9733;' : '&#9734;' %></button>
+		<button class="btn" data-placement="left" id="view-favorites-btn" title="<%= showingFavorites ? 'Show All' : 'Show Favorites Only' %>"><%= showingFavorites ? '&#9733;' : '&#9734;' %></button>
 	</div>
 	<div class="input-block previews-per-page">
 		<label for="preview-per-page">Per Page</label>
@@ -26,6 +26,10 @@
 	<div class="input-block text-preview">
 		<input type="text" id="preview-text-input" value="<%= preview_text %>" size="50" />
 		<button class="btn" id="preview-text-btn">Preview</button>
+	</div>
+	<div class="font-size-adjuster">
+		<input type="range" min="8" max="72" value="30" id="font-size-adjuster" name="font_size_adjuster" />
+		<output for="font_size_adjuster" onforminput="value=font_size_adjuster.valueAsNumber"><%= font_size %>px</output>
 	</div>
 </div>
 

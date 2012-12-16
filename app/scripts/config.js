@@ -48,6 +48,11 @@ require.config({
     "plugins/select2" : {
       deps : ["jquery"],
       exports : "Select2"
+    },
+
+    "plugins/bootstrap.tooltip" : {
+      deps : ["jquery"],
+      exports : "jQuery.fn.tooltip"
     }
   }
 

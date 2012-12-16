@@ -27,6 +27,18 @@ function($, _, app, Router) {
 	});
 
 	$(document).ready(function(){
+
+		// Polyfill for input[type="range"]
+		Modernizr.load({
+			test : Modernizr.inputtypes.range,
+			nope : ['/styles/fd-slider.css','/scripts/plugins/polyfill.fd-slider.js'],
+			callback : function(url, result, key){
+				if("fdSlider" in window && typeof (fdSlider.onDomReady) != "undefined") {
+					try { fdSlider.onDomReady(); } catch(err) {};
+				};
+			}
+		});
+
 		app.start({
 			root : window.location.pathname,
 			bootstrap : window.bootstrap || [],

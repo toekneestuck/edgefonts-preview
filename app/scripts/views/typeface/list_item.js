@@ -7,7 +7,8 @@ define([
 	"backbone",
 	"plugins/backbone.marionette",
 	"text!templates/typeface/list_item.tmpl",
-	"app"
+	"app",
+	"plugins/bootstrap.tooltip"
 ],
 
 function( $, _, Backbone, Marionette, TypefaceListItemTemplate, app ){
@@ -58,6 +59,10 @@ function( $, _, Backbone, Marionette, TypefaceListItemTemplate, app ){
 			}else{
 				app.addFontStyle( this );
 			}
+
+			this.ui.previewText.css('fontSize', this.model.get('font_size') + 'px');
+			this.ui.favorite.tooltip();
+			this.ui.previewText.tooltip();
 		},
 
 		startLoading : function(){
@@ -115,6 +120,10 @@ function( $, _, Backbone, Marionette, TypefaceListItemTemplate, app ){
 		},
 
 		toggleFavorite : function( evt ){
+			// Destroy the tooltip since we're re-rendering the whole block
+			this.ui.favorite.tooltip('destroy');
+
+			// Save it to localStorage
 			this.model.save({ favorite : !this.model.isFavorite() });
 
 			app.tracker.push(['_trackEvent', 'Favorite', this.model.get('slug')]);

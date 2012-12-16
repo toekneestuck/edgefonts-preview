@@ -1,7 +1,8 @@
+@import "variables";
 @import "h5bp.css";
 @import "select2.css";
 @import "compass/css3";
-@import "variables";
+@import "tooltip";
 
 /* Base */
 body{
@@ -83,6 +84,91 @@ input:not([type="image"]),
 	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAANUlEQVQIW2NkYGCQBOLnQAwDIL4xI5IAiAkWBOKzyBJwQZAJMAkUQZBWkASGIEzCB2QmugMAovcKhffwzikAAAAASUVORK5CYII=) repeat-x bottom left;
 	margin: 20px 0 15px;
 	padding-bottom: 20px;
+	position: relative;
+}
+
+.font-size-adjuster{
+	$sliderHeight: 6px;
+	$sliderWidth: 100%;
+
+	left: 0;
+	margin-top: -$sliderHeight;
+	position: absolute;
+	top: 100%;
+	width: $sliderWidth;
+
+	input[type="range"]{
+		background: transparent;
+		border: 0;
+		height: $sliderHeight;
+		left: 0;
+		padding: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+
+		-webkit-appearance: none;
+		-moz-appearance: none;
+
+		@include box-shadow(none);
+		@include border-radius(0);
+
+		&::-webkit-slider-thumb,
+		&::-moz-slider-thumb,
+		&::-ms-slider-thumb{
+			border: 1px solid darken( $green, 10% );
+			cursor: pointer;
+			height: 14px;
+			position: relative;
+			width: 100px;
+
+			@include background-image( linear-gradient( lighten($green, 5%), darken($green, 5%) ) ) ;
+			@include border-radius(3px);
+			@include box-shadow( rgba($black, 0.15) 0 1px 3px, inset rgba($white, 0.15) 1px 1px 0);
+
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			-ms-appearance: none;
+
+			&:before,
+			&:after{
+				background: transparent;
+				border: 4px solid transparent;
+				border-right-color: $white;
+				content: '';
+				height: 0;
+				left: 1px;
+				position: absolute;
+				top: 2px;
+				width: 0;
+			}
+			&:after{
+				border-left-color: $white;
+				border-right-color: transparent;
+				left: auto;
+				right: 1px;
+			}
+		}
+
+		&:focus,
+		&:active{
+			& + output{
+				@include opacity(1);
+			}
+		}
+	}
+
+	output{
+		background: darken( $white, 10% );
+		left: 101%;
+		padding: 3px 8px;
+		position: absolute;
+		top: -12px;
+
+		@include opacity(0);
+		@include border-radius(3px);
+		@include transition(opacity 0.2s ease-out);
+	}
 }
 
 .filters{
@@ -162,7 +248,7 @@ input:not([type="image"]),
 
 .live-search{
 	.select2-container{
-		width: 400px;
+		width: 385px;
 	}
 }
 

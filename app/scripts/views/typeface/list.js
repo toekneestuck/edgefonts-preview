@@ -10,7 +10,8 @@ define([
 	"text!templates/typeface/list.tmpl",
 	"views/typeface/list_item",
 	"app",
-	"plugins/select2"
+	"plugins/select2",
+	"plugins/bootstrap.tooltip"
 ],
 
 function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceListItemView, app, Select2 ){
@@ -33,7 +34,8 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			searchInput : '#search',
 			searchBtn : '#search-btn',
 			nameFilter : '#name-filter',
-			favoritesBtn : '#view-favorites-btn'
+			favoritesBtn : '#view-favorites-btn',
+			fontSizer : '#font-size-adjuster'
 		},
 
 		events : {
@@ -44,7 +46,8 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			'keypress #preview-per-page' : 'setPreviewsPerPage',
 			'change #preview-sort' : 'setSort',
 			'change #name-filter' : 'liveFilter',
-			'click #view-favorites-btn' : 'toggleFavorites'
+			'click #view-favorites-btn' : 'toggleFavorites',
+			'change #font-size-adjuster' : 'setFontSize'
 		},
 
 		initialize : function(){
@@ -100,7 +103,8 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 				var active = model.get('show_favorites');
 				this.ui.favoritesBtn
 					.html( active ? '&#9733;' : '&#9734;')
-					.attr('title', active ? 'Show All' : 'Show Favorites Only');
+					.attr('data-original-title', active ? 'Show All' : 'Show Favorites Only')
+					.tooltip('setContent');
 			}
 		},
 
@@ -120,6 +124,7 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 		onRender : function(){
 			this.buildNavigation();
 			this.buildFilter();
+			this.ui.favoritesBtn.tooltip();
 		},
 
 		/**
@@ -128,7 +133,7 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 		buildNavigation : function(){
 			var length = this.collection.totalPages,
 				current = this.collection.currentPage
-			    $container = $('<ul/>');
+				$container = $('<ul/>');
 
 			for( i=1; i<=length; i++){
 				$container.append(
@@ -218,6 +223,15 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			app.tracker.push(['_trackEvent', 'Sorting', attr + ', ' + dir]);
 
 			// Do NOT evt.preventDefault() so the change event fires
+		},
+
+		setFontSize : function( evt ){
+			var value = this.ui.fontSizer.val();
+
+			this.collection.setFontSize( value );
+			this.ui.fontSizer.next('output').text( value + 'px' );
+
+			app.tracker.push(['_trackEvent', 'Font Size', value]);
 		},
 
 		liveFilter : function( evt ){
