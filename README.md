@@ -3,12 +3,6 @@ Adobe Edge Fonts Preview
 
 One-pager to preview Adobe Edge Fonts. A work in progress. Much documentation of the code is also needed.
 
-To Do List
-----------
-* Add search
-* Mark favorites (and view them)
-* Adjust font size
-
 Overview
 --------
 
@@ -22,3 +16,29 @@ This project is an experiment built using [Yeoman](http://yeoman.io). Other fram
 * [Compass](http://compass-style.org)
 
 This is my first time using Yeoman, RequireJS, Backbone.Marionette, and Backbone.Paginator. There are likely things I'm doing wrong. Please tell me about them.
+
+### JSONifying the fonts from [EdgeFonts.com](http://edgefonts.com) ###
+
+The following code block is the small set of commands I run in the WebKit inspector to scrape all of the fonts from the Edge Fonts website into something usable:
+
+```javascript
+var tables = $$('table'),
+    fonts = [],
+    length = tables.length;
+
+for(var i=0 i<length; i++){
+    var table = fonts.item(i),
+        name = table.querySelector('th').innerText,
+        slug = table.querySelector('code').innerText,
+        weightRows = table.querySelectorAll('tbody tr'),
+        variations = [];
+
+    for(var k=0, lr=weightRows.length; k<lr; k++){
+        variations.push( weightRows.item(k).querySelector('code').innerText ); 
+    }
+
+    fonts.push({name:name,slug:slug,fonts:variations});
+}
+
+JSON.stringify(fonts);
+```
