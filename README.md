@@ -26,8 +26,8 @@ var tables = $$('table'),
     fonts = [],
     length = tables.length;
 
-for(var i=0 i<length; i++){
-    var table = fonts.item(i),
+for(var i=0; i<length; i++){
+    var table = tables.item(i),
         name = table.querySelector('th').innerText,
         slug = table.querySelector('code').innerText,
         weightRows = table.querySelectorAll('tbody tr'),
