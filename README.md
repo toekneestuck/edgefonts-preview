@@ -17,9 +17,17 @@ This project is an experiment built using [Yeoman](http://yeoman.io). Other fram
 
 This is my first time using Yeoman, RequireJS, Backbone.Marionette, and Backbone.Paginator. There are likely things I'm doing wrong. Please tell me about them.
 
+
+### API Endpoint ###
+
+Since Adobe has no way for users to access the fonts other than the EdgeFonts homepage, I created a simple API endpoint to make it easy for anyone to pull the whole list of fonts in JSON format and play:
+
+* [edgefonts.toekneestuck.com/api/fonts.json](http://edgefonts.toekneestuck.com/api/fonts.json)
+* And in case you want the font variant mapping: [edgefonts.toekneestuck.com/api/variant_map.json](http://edgefonts.toekneestuck.com/api/variant_map.json)
+
 ### JSONifying the fonts from [EdgeFonts.com](http://edgefonts.com) ###
 
-The following code block is the small set of commands I run in the WebKit inspector to scrape all of the fonts from the Edge Fonts website into something usable:
+In case you don't want to use the API, the following code block is the small set of commands I run in the WebKit inspector to scrape all of the fonts from the Edge Fonts website into something usable:
 
 ```javascript
 var tables = $$('table'),
