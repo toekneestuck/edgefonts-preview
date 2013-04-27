@@ -33,12 +33,12 @@ function( app, _, Backbone, Typeface, Paginator, localStorage, _str ){
 		localStorage : new Backbone.LocalStorage('font_favorites'),
 
 		useLevenshteinPlugin : true,
-		paginator_core : {},
+
 		paginator_ui : {
 			firstPage : 1,
 			currentPage : 1,
 			perPage : 10,
-			totalPages : 1
+			pagesInRange : 10
 		},
 
 		// Map Adobe's nomenclature to undertandable names
@@ -64,13 +64,13 @@ function( app, _, Backbone, Typeface, Paginator, localStorage, _str ){
 		},
 
 		initialize : function(){
+			Paginator.clientPager.prototype.initialize.apply( this, Array.prototype.slice.call(arguments) );
 			this.on( "change:favorite", this.saveFavorites, this );
-
-			Paginator.clientPager.prototype.initialize.call(this);
 		},
 
 		initializePagination : function( page ){
-			this.totalPages = Math.ceil( (app.bootstrap ? app.bootstrap.length : this.length ) / this.paginator_ui.perPage );
+			this.firstPage = 1;
+			this.totalPages = Math.ceil( this.length / this.paginator_ui.perPage );
 			this.currentPage = page || 1;
 			this.pager();
 		},
@@ -84,7 +84,6 @@ function( app, _, Backbone, Typeface, Paginator, localStorage, _str ){
 			this.lastFieldFilterRiles = [];
 			this.fieldFilterRules = [];
 			this.pager();
-			this.info();
 		},
 
 		parse : function( response ){
@@ -100,7 +99,9 @@ function( app, _, Backbone, Typeface, Paginator, localStorage, _str ){
 		},
 
 		getFavorites : function(){
-			return this.where({ favorite : true });
+			return _.filter( this.origModels, function( model ){
+				return model.isFavorite();
+			}, this);
 		},
 
 		setPreviewText : function( text ){
@@ -108,17 +109,19 @@ function( app, _, Backbone, Typeface, Paginator, localStorage, _str ){
 				'preview_text': this.escapeHTML( text )
 			};
 
-			this.each(function( typeface ){ typeface.set(attrs); }, this);
+			this.invoke('set', attrs);
 
 			if( this.origModels ){
-				_.each( this.origModels, function( typeface ){ typeface.set(attrs); }, this);
+				_.invoke( this.origModels, 'set', attrs );
 			}
 		},
 
 		setFontSize : function( size ){
-			this.each(function( model ){
-				model.set({ font_size: size });
-			});
+			this.invoke('set', { font_size: size });
+
+			if( this.origModels ){
+				_.invoke( this.origModels, 'set', { font_size : size });
+			}
 		},
 
 		// Stolen from underscore.string for input sanitization

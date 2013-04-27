@@ -131,17 +131,47 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 		 * Build the navigation view
 		 */
 		buildNavigation : function(){
-			var length = this.collection.totalPages,
-				current = this.collection.currentPage
+			var info = this.collection.info(),
+				length = this.collection.totalPages,
+				current = this.collection.currentPage,
+				pagePrefix = this.model.get('show_favorites') ? '/favorites/page/' : '/page/',
 				$container = $('<ul/>');
 
-			for( i=1; i<=length; i++){
+			if( this.firstPage != info.currentPage && length > 1 ){
+				$container.append(
+					$('<li/>', {"data-page" : 'first'})
+						.html( $('<a/>', { href: pagePrefix+ this.collection.firstPage }).text('First') )
+				);
+			}
+
+			if( info.currentPage > this.firstPage ){
+				$container.append(
+					$('<li/>', {"data-page" : 'prev'})
+						.html( $('<a/>', { href: pagePrefix+ (current-1) }).text('Previous') )
+				);
+			}
+
+			_.each( info.pageSet, function( i ){
 				$container.append(
 					$('<li/>', {"data-page" : i})
 						.html( $('<a/>', {
-							href: '/page/'+i,
+							href: pagePrefix+i,
 							class: current == i ? 'active' : ''
 						}).text( i ) )
+				);
+			}, this );
+
+			if( info.currentPage < info.totalPages ){
+				$container.append(
+					$('<li/>', {"data-page" : 'next'})
+						.html( $('<a/>', { href: pagePrefix+ (current+1) }).text('Next') )
+				);
+			}
+
+			if( info.totalPages != info.currentPage ){
+				$container.append(
+					$('<li/>', {"data-page" : 'last'})
+						.html( $('<a/>', { href: pagePrefix+ (length) }).text('Last') )
 				);
 			}
 
@@ -237,6 +267,13 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 		liveFilter : function( evt ){
 			var value = this.ui.nameFilter.val();
 
+			// If the user is filtering by favorties, but
+			// adjusts the filter, mark that they're no longer
+			// looking at just favorites.
+			if( this.model.get('show_favorites') ){
+				this.model.set({show_favorites: false});
+			}
+
 			this.model.set({ query : value.length ? value.split(',') : '' });
 		},
 
@@ -251,8 +288,8 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 			evt.preventDefault();
 		},
 
-		viewFavorites : function(){
-			var favorites = this.collection.where({ favorite : true });
+		viewFavorites : function( page ){
+			var favorites = this.collection.getFavorites();
 			favorites = _.map( favorites, function( model ){
 				return model.get('slug');
 			});
@@ -261,6 +298,10 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 				query : favorites,
 				show_favorites : true
 			});
+
+			if( page ){ this.collection.goTo( page ); }
+
+			app.router.navigate('/favorites');
 		},
 
 		clearFavorites : function(){
@@ -268,6 +309,8 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 				query : this.collection.lastFilterExpression,
 				show_favorites : false
 			});
+
+			app.router.navigate('');
 		}
 	})
 
