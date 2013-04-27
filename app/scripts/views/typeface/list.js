@@ -289,7 +289,9 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 		},
 
 		viewFavorites : function( page ){
-			var favorites = this.collection.getFavorites();
+			var favorites = this.collection.getFavorites(),
+				route = '/favorites';
+
 			favorites = _.map( favorites, function( model ){
 				return model.get('slug');
 			});
@@ -299,9 +301,12 @@ function( $, _, Backbone, Marionette, UserInput, TypefaceListTemplate, TypefaceL
 				show_favorites : true
 			});
 
-			if( page ){ this.collection.goTo( page ); }
+			if( page ){
+				this.collection.goTo( page );
+				route += '/page/'+page;
+			}
 
-			app.router.navigate('/favorites');
+			app.router.navigate(route);
 		},
 
 		clearFavorites : function(){
