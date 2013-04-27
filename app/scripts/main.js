@@ -40,7 +40,7 @@ function($, _, app, Router) {
 		});
 
 		app.start({
-			root : window.location.pathname,
+			root : '/',
 			bootstrap : window.bootstrap || [],
 			tracker : window._gaq || []
 		})
